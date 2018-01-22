@@ -39,7 +39,7 @@ function simpleText (message, parameters) {
   var fontsize = parameters['fontsize']
 
   context.fillStyle = 'rgba(0, 0, 0, 1.0)'
-  context.fillText('!!' + message, borderThickness, fontsize + borderThickness)
+  context.fillText(message, borderThickness, fontsize + borderThickness)
   var texture = new THREE.Texture(canvas)
   texture.minFilter = THREE.LinearFilter
   texture.needsUpdate = true

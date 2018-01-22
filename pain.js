@@ -47,19 +47,6 @@ function controls_setup () {
   controls.dynamicDampingFactor = 0.3
 }
 
-function addText (msg, x, y, z) {
-  let look_and_feel = {
-    fontsize: 48,
-    borderColor: {r: 255, g: 0, b: 0, a: 1.0},
-    backgroundColor: {r: 255, g: 100, b: 100, a: 0.8}
-  }
-  // let sprite = makeTextSprite(' Hello there ', look_and_feel)
-  // sprite.position.set(-85, 105, 55)
-  let sprite = makeTextSprite(msg, look_and_feel)
-  sprite.position.set(x, y, z)
-  scene.add(sprite)
-}
-
 function addText2 (msg, x, y, z) {
   let laf = {
     fontsize: 48,
@@ -67,7 +54,7 @@ function addText2 (msg, x, y, z) {
     backgroundColor: {r: 255, g: 100, b: 100, a: 0.8}
   }
 
-  let sprite = simpleText('!' + msg, laf)
+  let sprite = simpleText(msg, laf)
   sprite.position.set(x, y, z)
   scene.add(sprite)
 }
@@ -100,9 +87,19 @@ function init () {
   scene.background = new THREE.Color(0xffffff)
   addGrids()
 
-  for (let i = 0; i < 1; i++) {
+  let up = -500
+  let over = -500
+  let stride = 100
+  for (let i = 0; i < 10; i++) {
     // wall.position.set(0, 0, -500)
-    addText2(i + ' : ' + i * 20, 0, i * 20, -500)
+    let x = 0
+    let z = -500 // push
+
+    addText2(up, -500, up, z)
+    up += stride
+
+    over += stride
+    addText2(over, over, -500, z + 100)
   }
 
   var rollOverGeo = new THREE.BoxGeometry(100, 100, 100)
