@@ -9,6 +9,7 @@ let next_object_id = 0
 let myRaycaster
 let raycaster
 let mouse
+let everypart = []
 
 let side = 1100
 let unit_count = 11
@@ -71,6 +72,7 @@ function addText2 (msg, x, y, z) {
 }
 
 function onDocumentMouseMove (event) {
+
   /*
   event.preventDefault()
   mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1)
@@ -119,9 +121,9 @@ function init () {
 
   container.appendChild(renderer.domElement)
 
-  var dragControls = new THREE.DragControls(objects, camera, renderer.domElement)
-  dragControls.addEventListener('dragstart', function (event) { controls.enabled = false })
-  dragControls.addEventListener('dragend', function (event) { controls.enabled = true })
+  // var dragControls = new THREE.DragControls(objects, camera, renderer.domElement)
+  // dragControls.addEventListener('dragstart', function (event) { controls.enabled = false })
+  // dragControls.addEventListener('dragend', function (event) { controls.enabled = true })
 
   window.addEventListener('resize', onWindowResize, false)
   document.addEventListener('mousedown', onDocumentMouseDown, false)
@@ -152,22 +154,49 @@ function onDocumentMouseDown (event) {
 
   myRaycaster.setFromCamera(mouse, camera)
 
-  var intersects = myRaycaster.intersectObjects(objects)
+  let objs = []
+  everypart.forEach((name, i) => {
+    let o = scene.getObjectByName(name)
+
+    objs.push(o)
+  })
+  var intersects = myRaycaster.intersectObjects(objs)
   if (intersects.length > 0) {
     let here = intersects[0]
 
     console.log('here! ' + here.point.x + '   event ' + event.x)
 
     var geometry = new THREE.BoxGeometry(20, 20, 20)
-    var meshMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000, opacity: 1.0, transparent: false })
+    var meshMaterial = new THREE.LineBasicMaterial({ color: 0xff0000, opacity: 0.5, transparent: true })
     var pointOfInterest = new THREE.Mesh(geometry, meshMaterial)
-    pointOfInterest.position.x = here.point.x
-    pointOfInterest.position.y = here.point.y
+    pointOfInterest.position.x = here.point.x + 20
+    pointOfInterest.position.y = here.point.y + 20
     pointOfInterest.position.z = here.point.z
-    pointOfInterest.castShadow = false
-    pointOfInterest.receiveShadow = false
+    pointOfInterest.castShadow = true
+    pointOfInterest.receiveShadow = true
     scene.add(pointOfInterest)
   }
+  /*
+  // + ---------------------------------- +
+  var vector = new THREE.Vector3()
+  vector.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5)
+  vector.unproject(camera)
+  var dir = vector.sub(camera.position).normalize()
+  var distance = -camera.position.z / dir.z
+  var pos = camera.position.clone().add(dir.multiplyScalar(distance))
+
+  console.log('d2 x ' + event.x + '  ' + event.y + '  pos ' + pos.x + '  ' + pos.y + ' distance  ' + distance)
+
+  var geometry = new THREE.BoxGeometry(30, 30, 30)
+  var meshMaterial = new THREE.LineBasicMaterial({ color: 0x00ff, opacity: 1.0, transparent: true })
+  var pointOfInterest = new THREE.Mesh(geometry, meshMaterial)
+  pointOfInterest.position.x = pos.x
+  pointOfInterest.position.y = pos.y
+  pointOfInterest.position.z = pos.z
+  pointOfInterest.castShadow = true
+  pointOfInterest.receiveShadow = true
+  scene.add(pointOfInterest)
+  */
 }
 
 // console.log('Nice examples: https://stemkoski.github.io/Three.js/Mouse-Click.html')
