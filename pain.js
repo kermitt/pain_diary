@@ -1,3 +1,7 @@
+let origX = -9999
+let origY = -9999
+let origZ = -9999
+let r = 0
 
 let container
 let camera, controls, scene, renderer
@@ -98,6 +102,15 @@ function addText2 (msg, x, y, z) {
   scene.add(sprite)
 }
 
+function reset () {
+  camera.position.x = 0
+  camera.position.y = 0
+  camera.position.z = 1000
+  camera.rotation.x = 0
+  camera.rotation.y = 0
+  camera.rotation.z = 0
+  render()
+}
 function onDocumentMouseMove (event) {
   event.preventDefault()
   mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1)
@@ -131,36 +144,9 @@ function init () {
   rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial)
   scene.add(rollOverMesh)
 
-//  var geometry = new THREE.BoxGeometry(100, 100, 100)
-/*
-  var geometry = new THREE.SphereGeometry(100, 16, 16)
-
-  for (var i = 0; i < 3; i++) {
-    var meshMaterial = new THREE.LineBasicMaterial({ color: 0x000000, opacity: 0.3, transparent: true })
-    var object = new THREE.Mesh(geometry, meshMaterial)
-    object.position.x = Math.random() * 1000 - 500
-    object.position.y = Math.random() * 600 - 300
-    object.position.z = Math.random() * 800 - 400
-
-    object.castShadow = false
-    object.receiveShadow = false
-    object.name = i
-
-    scene.add(object)
-    objects.push(object)
-  }
-*/
-
-//  populateBodyPart(Math.random() * 800 - 400, Math.random() * 800 - 400, Math.random() * 800 - 400, stride, stride, stride)
-//  populateBodyPart(Math.random() * 800 - 400, Math.random() * 800 - 400, Math.random() * 800 - 400, stride, stride, stride)
-//  populateBodyPart(Math.random() * 800 - 400, Math.random() * 800 - 400, Math.random() * 800 - 400, stride, stride, stride)
-
-  populateBodyPart(getX(2), getY(2), getZ(2), stride, stride, stride)
-  populateBodyPart(getX(3), getY(2), getZ(2), stride, stride, stride)
-  populateBodyPart(getX(6), getY(2), getZ(2), stride, stride, stride)
-  let a_little = 20
-  let side = stride - (a_little * 2)
-  populateBodyPart(getX(6) + a_little, getY(2), getZ(2), side, side, side)
+  populateBodyPartSphere(getX(2), getY(2), getZ(2), stride / 2, 16, 16)
+  populateBodyPartBox(getX(3), getY(2), getZ(2), stride, stride, stride)
+  populateBodyPartBox(getX(6), getY(2), getZ(2), stride, stride, stride)
 
   myRaycaster = new THREE.Raycaster()
   raycaster = new THREE.Raycaster()
@@ -193,6 +179,18 @@ function animate () {
 }
 
 function render () {
+//  console.log("controls: " + )
+
+//  const unitHeight = -2.0 * camera.position.z * Math.tan(fov / 2)
+//  scaleFactor = unitHeight / this.viewer.height
+
+  if (camera.position.x != origX || camera.position.y != origY || camera.position.z != origZ) {
+    console.log(++r + '  CAMERA X: ' + camera.position.x + '  Y: ' + camera.position.y + '    Z: ' + camera.position.z + ' rot ' + camera.rotation.x + '   y  ' + camera.rotation.y + ' z ' + camera.rotation.z)
+    origX = camera.position.x
+    origY = camera.position.y
+    origZ = camera.position.z
+  }
+
   controls.update()
   renderer.render(scene, camera)
 }
@@ -220,7 +218,40 @@ function onDocumentMouseDown (event) {
   }
 }
 
-function populateBodyPart (x, y, z, one, two, three) {
+function populateBodyPartSphere (x, y, z, radius, widthSegments, heightSegments) {
+  // var geometry = new THREE.SphereGeometry(100, 16, 16)
+
+  /// OUTER
+  var geometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments)
+  var meshMaterial = new THREE.LineBasicMaterial({ color: 0x000000, opacity: 0.5, transparent: true })
+  var object = new THREE.Mesh(geometry, meshMaterial)
+  object.position.x = x// Math.random() * 1000 - 500
+  object.position.y = y// Math.random() * 600 - 300
+  object.position.z = z// Math.random() * 800 - 400
+
+  object.castShadow = false
+  object.receiveShadow = false
+  object.name = ++next_object_id
+  scene.add(object)
+  objects.push(object)
+
+  /// INNER
+  console.log('INEER BAMY ! ')
+  var geometry = new THREE.SphereGeometry((radius - 10), widthSegments, heightSegments)
+  var meshMaterial2 = new THREE.LineBasicMaterial({ color: 0xff6633, opacity: 0.4, transparent: true })
+  var object2 = new THREE.Mesh(geometry, meshMaterial2)
+  object2.position.x = x// + 40 // Math.random() * 1000 - 500
+  object2.position.y = y// + 40 // Math.random() * 600 - 300
+  object2.position.z = z// + 40 // Math.random() * 800 - 400
+
+  object2.castShadow = false
+  object2.receiveShadow = false
+  object2.name = ++next_object_id
+  scene.add(object2)
+  objects.push(object2)
+}
+
+function populateBodyPartBox (x, y, z, one, two, three) {
   next_object_id++
   // var geometry = new THREE.SphereGeometry(100, 16, 16)
   var geometry = new THREE.BoxGeometry(one, two, three)
@@ -237,6 +268,13 @@ function populateBodyPart (x, y, z, one, two, three) {
 
   scene.add(object)
   objects.push(object)
+
+/*
+  let a_little = 20
+  let side = stride - (a_little * 2)
+  populateBodyPartBox(getX(6) + a_little, getY(2), getZ(2), side, side, side)
+
+*/
 }
 
 console.log('Nice examples: https://stemkoski.github.io/Three.js/Mouse-Click.html')
