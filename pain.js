@@ -90,7 +90,7 @@ function init () {
   let up = -500
   let over = -500
   let stride = 100
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 11; i++) {
     // wall.position.set(0, 0, -500)
     let x = 0
     let z = -500 // push
@@ -98,8 +98,8 @@ function init () {
     addText2(up, -500, up, z)
     up += stride
 
-    over += stride
     addText2(over, over, -500, z + 100)
+    over += stride
   }
 
   var rollOverGeo = new THREE.BoxGeometry(100, 100, 100)
