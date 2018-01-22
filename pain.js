@@ -1,12 +1,17 @@
 
-var container, stats
-var camera, controls, scene, renderer
-var objects = []
+let container
+let camera, controls, scene, renderer
+let objects = []
 var walls = []
 
-var myRaycaster
-var raycaster
-var mouse
+let myRaycaster
+let raycaster
+let mouse
+
+let side = 1600
+let unit_count = 16
+let side_half = side / 2
+let stride = side / unit_count
 
 let rollOverMesh, rollOverMaterial
 let cubeGeo, cubeMaterial
@@ -15,7 +20,7 @@ init()
 animate()
 // z = forth and back
 // y = up and down
-
+// x = left and right
 function remove1 () {
   var popped = objects.splice(0, 1)[0]
   scene.remove(popped)
@@ -24,17 +29,30 @@ function remove1 () {
   render()
 }
 function addGrids () {
-  var floor = new THREE.GridHelper(1000, 10)
-  floor.position.set(0, -500, 0)
+  var floor = new THREE.GridHelper(side, unit_count)
+  floor.position.set(0, -side_half, 0)
 
-  var wall = new THREE.GridHelper(1000, 10)
-  wall.position.set(0, 0, -500)
+  var wall = new THREE.GridHelper(side, unit_count)
+  wall.position.set(0, 0, -side_half)
   wall.rotation.x = Math.PI / 2
  // wall.setColors(new THREE.Color(0xffffff), new THREE.Color(0x00ff00))
   scene.add(floor)
   scene.add(wall)
 
   walls.push(floor)
+
+  let up = -side_half
+  let over = -side_half
+  for (let i = 0; i < unit_count + 1; i++) {
+    let x = 0
+    let z = -side_half // push
+
+    addText2(up, -side_half, up, z)
+    up += stride
+
+    addText2(over, over, -side_half, z + stride)
+    over += stride
+  }
 }
 function controls_setup () {
   controls = new THREE.TrackballControls(camera)
@@ -70,7 +88,7 @@ function onDocumentMouseMove (event) {
       rollOverMesh.position.copy(intersect.point)// .add(intersect.face.normal)
       rollOverMesh.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25)
     } catch (boom) {
-      console.log('WHat?! ' + boom)
+      console.log('FAIL: ' + boom)
     }
   }
   render()
@@ -87,21 +105,6 @@ function init () {
   scene.background = new THREE.Color(0xffffff)
   addGrids()
 
-  let up = -500
-  let over = -500
-  let stride = 100
-  for (let i = 0; i < 11; i++) {
-    // wall.position.set(0, 0, -500)
-    let x = 0
-    let z = -500 // push
-
-    addText2(up, -500, up, z)
-    up += stride
-
-    addText2(over, over, -500, z + 100)
-    over += stride
-  }
-
   var rollOverGeo = new THREE.BoxGeometry(100, 100, 100)
   rollOverMaterial = new THREE.MeshBasicMaterial({ color: 0xff6633, opacity: 0.6, transparent: true })
   rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial)
@@ -111,12 +114,6 @@ function init () {
   for (var i = 0; i < 3; i++) {
     var meshMaterial = new THREE.LineBasicMaterial({ color: 0x000000, opacity: 0.3, transparent: true })
     var object = new THREE.Mesh(geometry, meshMaterial)
-    // var object = new THREE.Mesh(new THREE.SphereGeometry(20, 6, 20), new THREE.MeshBasicMaterial({color: 0x0000ff, wireframe: true}))
-
-    // var geometry = new THREE.SphereGeometry(40, 32, 32)
-    // var material = new THREE.MeshBasicMaterial({color: 0x000000})
-    // var object = new THREE.Mesh(geometry, material)
-
     object.position.x = Math.random() * 1000 - 500
     object.position.y = Math.random() * 600 - 300
     object.position.z = Math.random() * 800 - 400
