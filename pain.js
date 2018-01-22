@@ -16,11 +16,18 @@ animate()
 // z = forth and back
 // y = up and down
 
+function remove1 () {
+  var popped = objects.splice(0, 1)[0]
+  scene.remove(popped)
+
+  console.log('name: ' + popped.name)
+  render()
+}
 function addGrids () {
-  var floor = new THREE.GridHelper(1000, 20)
+  var floor = new THREE.GridHelper(1000, 10)
   floor.position.set(0, -500, 0)
 
-  var wall = new THREE.GridHelper(1000, 20)
+  var wall = new THREE.GridHelper(1000, 10)
   wall.position.set(0, 0, -500)
   wall.rotation.x = Math.PI / 2
  // wall.setColors(new THREE.Color(0xffffff), new THREE.Color(0x00ff00))
@@ -98,13 +105,13 @@ function init () {
     addText2(i + ' : ' + i * 20, 0, i * 20, -500)
   }
 
-  var rollOverGeo = new THREE.BoxGeometry(50, 50, 50)
-  rollOverMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, opacity: 0.6, transparent: true })
+  var rollOverGeo = new THREE.BoxGeometry(100, 100, 100)
+  rollOverMaterial = new THREE.MeshBasicMaterial({ color: 0xff6633, opacity: 0.6, transparent: true })
   rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial)
   scene.add(rollOverMesh)
 
   var geometry = new THREE.BoxGeometry(100, 100, 100)
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < 3; i++) {
     var meshMaterial = new THREE.LineBasicMaterial({ color: 0x000000, opacity: 0.3, transparent: true })
     var object = new THREE.Mesh(geometry, meshMaterial)
     // var object = new THREE.Mesh(new THREE.SphereGeometry(20, 6, 20), new THREE.MeshBasicMaterial({color: 0x0000ff, wireframe: true}))
@@ -119,15 +126,14 @@ function init () {
 
     object.castShadow = false
     object.receiveShadow = false
+    object.name = i
 
     scene.add(object)
     objects.push(object)
   }
 
   myRaycaster = new THREE.Raycaster()
-
   raycaster = new THREE.Raycaster()
-
   mouse = new THREE.Vector2()
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
