@@ -31,17 +31,24 @@ function reset () {
 }
 
 function makeBobby () {
-  populateBodyPartSphere(getX(3), getY(1), getZ(5), stride * 0.6, 16, 16, 'left_foot')
-  populateBodyPartSphere(getX(3.3), getY(2), getZ(5), stride * 0.8, 16, 16, 'left_calf')
-  populateBodyPartSphere(getX(3.6), getY(3), getZ(5), stride * 1, 16, 16, 'left_thigh')
+  populateBodyPartSphere(getX(3.2), getY(1), getZ(5), stride * 0.6, 16, 16, 'left_foot')
+  populateBodyPartSphere(getX(3.5), getY(2), getZ(5), stride * 0.8, 16, 16, 'left_calf')
+  populateBodyPartSphere(getX(4.0), getY(3), getZ(5), stride * 1, 16, 16, 'left_thigh')
+  populateBodyPartSphere(getX(7.8), getY(1), getZ(6), stride * 0.6, 16, 16, 'right_foot')
+  populateBodyPartSphere(getX(7.5), getY(2), getZ(6), stride * 0.8, 16, 16, 'right_calf')
+  populateBodyPartSphere(getX(7.1), getY(3), getZ(6), stride * 1, 16, 16, 'right_thigh')
+  populateBodyPartSphere(getX(5.3), getY(4.5), getZ(6), stride * 1.3, 16, 16, 'tummy')
+  populateBodyPartSphere(getX(5.3), getY(6.5), getZ(6.3), stride * 1.2, 16, 16, 'chest')
+  populateBodyPartSphere(getX(5.4), getY(8), getZ(6.7), stride * 0.8, 16, 16, 'head')
+  populateBodyPartBox(getX(5), getY(5), getZ(5), 100, 100, 100, 'right_foot')
 
-  populateBodyPartSphere(getX(8), getY(1), getZ(6), stride * 0.6, 16, 16, 'right_foot')
-  populateBodyPartSphere(getX(7.7), getY(2), getZ(6), stride * 0.8, 16, 16, 'right_calf')
-  populateBodyPartSphere(getX(7.3), getY(3), getZ(6), stride * 1, 16, 16, 'right_thigh')
+  populateBodyPartSphere(getX(3.6), getY(6.8), getZ(7), stride * 0.7, 16, 16, 'left_upperarm')
+  populateBodyPartSphere(getX(3.0), getY(6.0), getZ(7.2), stride * 0.6, 16, 16, 'left_lowerarm')
+  populateBodyPartSphere(getX(2.9), getY(5.0), getZ(7.3), stride * 0.4, 16, 16, 'left_hand')
 
-  populateBodyPartSphere(getX(5.3), getY(4.5), getZ(6), stride * 1.5, 16, 16, 'tummy')
-
-//  populateBodyPartBox(getX(5), getY(5), getZ(5), 100, 100, 100, 'right_foot')
+  populateBodyPartSphere(getX(7.1), getY(6.8), getZ(6), stride * 0.7, 16, 16, 'right_upperarm')
+  populateBodyPartSphere(getX(7.7), getY(6.0), getZ(5.9), stride * 0.6, 16, 16, 'left_lowerarm')
+  populateBodyPartSphere(getX(7.8), getY(5.0), getZ(5.8), stride * 0.4, 16, 16, 'left_hand')
 
 //  populateBodyPartBox(getX(1), getY(10), getZ(2), stride, stride, stride)
 //  populateBodyPartBox(getX(6), getY(2), getZ(2), stride, stride, stride)
@@ -62,7 +69,7 @@ function populateBodyPartSphere (x, y, z, radius, widthSegments, heightSegments,
   object.receiveShadow = false
   object.name = ++next_object_id
   scene.add(object)
-  objects.push(object)
+  // objects.push(object)
   /*
   /// INNER
   var geometry2 = new THREE.SphereGeometry((radius * 0.6), widthSegments, heightSegments)
@@ -91,7 +98,7 @@ function populateBodyPartBox (x, y, z, sideX, sideY, sideZ, bodyPart) {
   object.receiveShadow = false
   object.name = ++next_object_id
   scene.add(object)
-  objects.push(object)
+  // objects.push(object)
   /*
   // inner
   var geometry2 = new THREE.BoxGeometry(sideX * 0.5, sideY * 0.5, sideZ * 0.5)
