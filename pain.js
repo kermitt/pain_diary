@@ -52,7 +52,9 @@ function makeBobby () {
 }
 
 function populateBodyPartSphere (x, y, z, radius, widthSegments, heightSegments, bodyPart) {
-  everypart.push(bodyPart)
+  // everypart.push(bodyPart)
+  everypart[bodyPart] = []
+
   // var geometry = new THREE.SphereGeometry(100, 16, 16)
 
   /// OUTER
@@ -71,7 +73,7 @@ function populateBodyPartSphere (x, y, z, radius, widthSegments, heightSegments,
 }
 
 function populateBodyPartBox (x, y, z, sideX, sideY, sideZ, bodyPart) {
-  everypart.push(bodyPart)
+  everypart[bodyPart] = []
 
   var geometry = new THREE.BoxGeometry(sideX, sideY, sideZ)
   var meshMaterial = new THREE.LineBasicMaterial({ color: 0xff0000, opacity: 0.5, transparent: true })
@@ -97,4 +99,29 @@ function showIds () {
     }
   })
   console.log('allNamed: ' + JSON.stringify(everypart, null, 6))
+}
+
+var mouseLineMaterial = new THREE.LineBasicMaterial({
+  color: 0x000000,
+  linewidth: 12
+})
+
+function snapto (event) {
+
+}
+
+function drawLine () {
+// create a blue LineBasicMaterial
+  var material = new THREE.LineBasicMaterial({
+    color: 0x000000,
+    linewidth: 12
+  })
+  var geometry = new THREE.Geometry()
+  geometry.vertices.push(new THREE.Vector3(-500, -500, -500))
+  geometry.vertices.push(new THREE.Vector3(0, 0, 0))
+  // geometry.vertices.push(new THREE.Vector3(10, 0, 0))
+
+  var line = new THREE.Line(geometry, material)
+  scene.add(line)
+  render()
 }

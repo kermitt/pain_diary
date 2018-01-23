@@ -9,7 +9,7 @@ let next_object_id = 0
 let myRaycaster
 let raycaster
 let mouse
-let everypart = []
+let everypart = {}
 
 let side = 1100
 let unit_count = 11
@@ -72,6 +72,7 @@ function addText2 (msg, x, y, z) {
 }
 
 function onDocumentMouseMove (event) {
+  snapto(event)
 
   /*
   event.preventDefault()
@@ -155,11 +156,11 @@ function onDocumentMouseDown (event) {
   myRaycaster.setFromCamera(mouse, camera)
 
   let objs = []
-  everypart.forEach((name, i) => {
-    let o = scene.getObjectByName(name)
-
+//  everypart.forEach((name, i) => {
+  for (let key in everypart) {
+    let o = scene.getObjectByName(key)
     objs.push(o)
-  })
+  }
   var intersects = myRaycaster.intersectObjects(objs)
   if (intersects.length > 0) {
     let here = intersects[0]
@@ -176,7 +177,7 @@ function onDocumentMouseDown (event) {
     pointOfInterest.receiveShadow = true
     scene.add(pointOfInterest)
   }
-  /*
+
   // + ---------------------------------- +
   var vector = new THREE.Vector3()
   vector.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5)
@@ -188,15 +189,14 @@ function onDocumentMouseDown (event) {
   console.log('d2 x ' + event.x + '  ' + event.y + '  pos ' + pos.x + '  ' + pos.y + ' distance  ' + distance)
 
   var geometry = new THREE.BoxGeometry(30, 30, 30)
-  var meshMaterial = new THREE.LineBasicMaterial({ color: 0x00ff, opacity: 1.0, transparent: true })
+  var meshMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff, opacity: 1.0, transparent: true })
   var pointOfInterest = new THREE.Mesh(geometry, meshMaterial)
   pointOfInterest.position.x = pos.x
   pointOfInterest.position.y = pos.y
-  pointOfInterest.position.z = pos.z
+  pointOfInterest.position.z = getZ(5.5)
   pointOfInterest.castShadow = true
   pointOfInterest.receiveShadow = true
   scene.add(pointOfInterest)
-  */
 }
 
 // console.log('Nice examples: https://stemkoski.github.io/Three.js/Mouse-Click.html')
