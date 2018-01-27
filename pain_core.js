@@ -183,7 +183,7 @@ function onDocumentMouseDown (event) {
   vector.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5)
   vector.unproject(camera)
   var dir = vector.sub(camera.position).normalize()
-  var distance = -camera.position.z / dir.z
+  var distance = -camera.position.z / dir.z / 2
   var pos = camera.position.clone().add(dir.multiplyScalar(distance))
 
   console.log('d2 x ' + event.x + '  ' + event.y + '  pos ' + pos.x + '  ' + pos.y + ' distance  ' + distance)
